@@ -1,0 +1,83 @@
+# action.yaml
+name: "Grai Server Action"
+description: "Determines the impact of changing data on downstream users"
+inputs:
+  client-host:
+    description: "The host for the Grai server"
+    required: false
+    default: "https://api.grai.io"
+  client-port:
+    description: "The port for the Grai server"
+    required: false
+    default: "443"
+  api-key:
+    description: "The api key for the Grai server"
+    required: true
+  action:
+    description: "update or tests"
+    required: false
+    default: "update"
+  connection_id:
+    description: "UUID for an existing connection"
+    required: false
+  connector_name:
+    required: false
+  connector_namespace:
+    required: false
+  connector_metadata:
+    required: false
+  connector_secrets:
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+    - name: Install Dependencies
+      run: pip install -r requirements.txt
+      shell: bash
+    - name: Pass Inputs to Shell
+      if: ${{ github.event_name == 'push' }}
+      shell: bash
+      run: |
+        echo "GRAI_CLIENT_HOST=${{ inputs.client-host }}" >> $GITHUB_ENV
+        echo "GRAI_CLIENT_PORT=${{ inputs.client-port }}" >> $GITHUB_ENV
+        echo "GRAI_API_KEY=${{ inputs.api-key }}" >> $GITHUB_ENV
+        echo "GRAI_ACTION=${{ inputs.action }}" >> $GITHUB_ENV
+        echo "GRAI_CONNECTION_ID=${{ inputs.connection_id }}" >> $GITHUB_ENV
+        echo "GRAI_CONNECTOR_NAME=${{ inputs.connector_name }}" >> $GITHUB_ENV
+        echo "GRAI_CONNECTOR_NAMESPACE=${{ inputs.connector_namespace }}" >> $GITHUB_ENV
+        echo 'GRAI_CONNECTOR_METADATA=${{ inputs.connector_metadata }}' >> $GITHUB_ENV
+        echo 'GRAI_CONNECTOR_SECRETS=${{ inputs.connector_secrets }}' >> $GITHUB_ENV
+        echo "GITHUB_OWNER=${{ github.repository_owner }}" >> $GITHUB_ENV
+        echo "GITHUB_REPO=${{ github.event.repository.name }}" >> $GITHUB_ENV
+        echo "GIT_BRANCH=${{ github.ref_name }}" >> $GITHUB_ENV
+        echo "GIT_HEAD_SHA=${{ github.event.after }}" >> $GITHUB_ENV
+        echo "GIT_COMMIT_MESSAGE=${{ github.event.head_commit.message }}" >> $GITHUB_ENV
+    - name: Pass Inputs to Shell
+      if: ${{ github.event_name == 'pull_request' }}
+      shell: bash
+      run: |
+        echo "GRAI_CLIENT_HOST=${{ inputs.client-host }}" >> $GITHUB_ENV
+        echo "GRAI_CLIENT_PORT=${{ inputs.client-port }}" >> $GITHUB_ENV
+        echo "GRAI_API_KEY=${{ inputs.api-key }}" >> $GITHUB_ENV
+        echo "GRAI_ACTION=${{ inputs.action }}" >> $GITHUB_ENV
+        echo "GRAI_CONNECTION_ID=${{ inputs.connection_id }}" >> $GITHUB_ENV
+        echo "GRAI_CONNECTOR_NAME=${{ inputs.connector_name }}" >> $GITHUB_ENV
+        echo "GRAI_CONNECTOR_NAMESPACE=${{ inputs.connector_namespace }}" >> $GITHUB_ENV
+        echo 'GRAI_CONNECTOR_METADATA=${{ inputs.connector_metadata }}' >> $GITHUB_ENV
+        echo 'GRAI_CONNECTOR_SECRETS=${{ inputs.connector_secrets }}' >> $GITHUB_ENV
+        echo "GITHUB_OWNER=${{ github.repository_owner }}" >> $GITHUB_ENV
+        echo "GITHUB_REPO=${{ github.event.repository.name }}" >> $GITHUB_ENV
+        echo "GIT_BRANCH=${{ github.head_ref }}" >> $GITHUB_ENV
+        echo "GIT_HEAD_SHA=${{ github.event.pull_request.head.sha }}" >> $GITHUB_ENV
+        echo "GIT_COMMIT_MESSAGE=${{ github.event.head_commit.message }}" >> $GITHUB_ENV
+        echo "GITHUB_PR_REFERENCE=${{ github.event.number }}" >> $GITHUB_ENV
+        echo "GITHUB_PR_TITLE=${{ github.event.pull_request.title }}" >> $GITHUB_ENV
+    - name: Create Run
+      id: create-run
+      run: python src/create_run.py
+      shell: bash
