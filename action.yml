@@ -39,6 +39,9 @@ runs:
     - name: List files
       run: ls
       shell: bash
+    - name: Show readme
+      run: cat README.md
+      shell: bash
     # - name: List files
     #   run: ls src
     #   shell: bash
@@ -88,5 +91,5 @@ runs:
         echo "GITHUB_PR_TITLE=${{ github.event.pull_request.title }}" >> $GITHUB_ENV
     - name: Create Run
       id: create-run
-      run: python src/create_run.py
+      run: python create_run.py
       shell: bash
