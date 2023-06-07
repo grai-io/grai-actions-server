@@ -39,8 +39,11 @@ runs:
     - name: List files
       run: ls
       shell: bash
+    - name: List files
+      run: ls src
+      shell: bash
     - name: Install Dependencies
-      run: pip install -r requirements.txt
+      run: pip install -r src/requirements.txt
       shell: bash
     - name: Pass Inputs to Shell
       if: ${{ github.event_name == 'push' }}
