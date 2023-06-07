@@ -36,20 +36,8 @@ runs:
       uses: actions/setup-python@v4
       with:
         python-version: "3.11"
-    - name: List files
-      run: ls
-      shell: bash
-    - name: Show readme
-      run: cat README.md
-      shell: bash
-    - name: List files
-      run: ls ${GITHUB_ACTION_PATH}
-      shell: bash
-    # - name: Install Dependencies
-    #   run: pip install -r src/requirements.txt
-    #   shell: bash
     - name: Install Dependencies
-      run: pip install requests
+      run: pip install -r ${GITHUB_ACTION_PATH}/requirements.txt
       shell: bash
     - name: Pass Inputs to Shell
       if: ${{ github.event_name == 'push' }}
@@ -91,5 +79,5 @@ runs:
         echo "GITHUB_PR_TITLE=${{ github.event.pull_request.title }}" >> $GITHUB_ENV
     - name: Create Run
       id: create-run
-      run: python create_run.py
+      run: python ${GITHUB_ACTION_PATH}/src/create_run.py
       shell: bash
