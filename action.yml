@@ -42,9 +42,9 @@ runs:
     - name: Show readme
       run: cat README.md
       shell: bash
-    # - name: List files
-    #   run: ls src
-    #   shell: bash
+    - name: List files
+      run: ls ${GITHUB_ACTION_PATH}
+      shell: bash
     # - name: Install Dependencies
     #   run: pip install -r src/requirements.txt
     #   shell: bash
