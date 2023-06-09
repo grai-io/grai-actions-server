@@ -22,6 +22,7 @@ connector_name = getEnv("GRAI_CONNECTOR_NAME")
 connector_namespace = getEnv("GRAI_CONNECTOR_NAMESPACE")
 connector_metadata = getEnv("GRAI_CONNECTOR_METADATA")
 connector_secrets = getEnv("GRAI_CONNECTOR_SECRETS")
+file_path = getEnv("GRAI_FILE_PATH")
 
 github_owner = getEnv("GITHUB_OWNER")
 github_repo = getEnv("GITHUB_REPO")
@@ -51,10 +52,22 @@ if github_owner is not None:
 
 headers = {"Authorization": f"Api-Key {api_key}"}
 
-res = requests.post(
-    f"{client_host.rstrip('/')}/api/v1/external-runs/",
-    data=data,
-    headers=headers,
-)
+res = None
+
+if file_path:
+    with open(file_path, "rb") as file:
+        res = requests.post(
+            f"{client_host.rstrip('/')}/api/v1/external-runs/",
+            data=data,
+            headers=headers,
+            files={"file": file},
+        )
+else:
+    res = requests.post(
+        f"{client_host.rstrip('/')}/api/v1/external-runs/",
+        data=data,
+        headers=headers,
+    )
+
 res.raise_for_status()
 print(res.json())
