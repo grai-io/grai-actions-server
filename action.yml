@@ -31,6 +31,9 @@ inputs:
   file_path:
     required: false
     description: "Path to the file to be uploaded"
+  source_name:
+    required: false
+    description: "Name of the source"
 
 runs:
   using: "composite"
@@ -55,6 +58,7 @@ runs:
         echo "GRAI_CONNECTOR_NAMESPACE=${{ inputs.connector_namespace }}" >> $GITHUB_ENV
         echo 'GRAI_CONNECTOR_METADATA=${{ inputs.connector_metadata }}' >> $GITHUB_ENV
         echo 'GRAI_CONNECTOR_SECRETS=${{ inputs.connector_secrets }}' >> $GITHUB_ENV
+        echo 'GRAI_SOURCE_NAME=${{ inputs.source_name }}' >> $GITHUB_ENV
         echo 'GRAI_FILE_PATH=${{ inputs.file_path }}' >> $GITHUB_ENV
         echo "GITHUB_OWNER=${{ github.repository_owner }}" >> $GITHUB_ENV
         echo "GITHUB_REPO=${{ github.event.repository.name }}" >> $GITHUB_ENV
@@ -74,6 +78,7 @@ runs:
         echo "GRAI_CONNECTOR_NAMESPACE=${{ inputs.connector_namespace }}" >> $GITHUB_ENV
         echo 'GRAI_CONNECTOR_METADATA=${{ inputs.connector_metadata }}' >> $GITHUB_ENV
         echo 'GRAI_CONNECTOR_SECRETS=${{ inputs.connector_secrets }}' >> $GITHUB_ENV
+        echo 'GRAI_SOURCE_NAME=${{ inputs.source_name }}' >> $GITHUB_ENV
         echo 'GRAI_FILE_PATH=${{ inputs.file_path }}' >> $GITHUB_ENV
         echo "GITHUB_OWNER=${{ github.repository_owner }}" >> $GITHUB_ENV
         echo "GITHUB_REPO=${{ github.event.repository.name }}" >> $GITHUB_ENV

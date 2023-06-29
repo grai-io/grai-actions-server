@@ -22,6 +22,7 @@ connector_name = getEnv("GRAI_CONNECTOR_NAME")
 connector_namespace = getEnv("GRAI_CONNECTOR_NAMESPACE")
 connector_metadata = getEnv("GRAI_CONNECTOR_METADATA")
 connector_secrets = getEnv("GRAI_CONNECTOR_SECRETS")
+source_name = getEnv("GRAI_SOURCE_NAME")
 file_path = getEnv("GRAI_FILE_PATH")
 
 github_owner = getEnv("GITHUB_OWNER")
@@ -41,6 +42,7 @@ elif connector_name is not None:
     data["connector_namespace"] = connector_namespace
     data["connector_metadata"] = connector_metadata
     data["connector_secrets"] = connector_secrets
+    data["source_name"] = source_name
 if github_owner is not None:
     data["github_owner"] = github_owner
     data["github_repo"] = github_repo
