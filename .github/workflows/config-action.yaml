@@ -1,0 +1,21 @@
+name: Example Config Action
+
+on: pull_request
+
+jobs:
+  create_run:
+    runs-on: ubuntu-latest
+    name: Test Grai
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Create Run
+        uses: grai-io/grai-actions-server@master
+        with:
+          api-key: ${{ secrets.GRAI_API_KEY }}
+          action: tests
+          connector_name: PostgreSQL
+          connector_namespace: prod
+          connector_metadata: '{"host":"sample-database.cudyk77thtpt.us-west-2.rds.amazonaws.com","port": 5432,"dbname":"jaffle_shop_dev","user":"demo"}'
+          connector_secrets: '{"password":"zfYD%qW2VOfUmK1Y"}'
